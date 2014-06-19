@@ -1,0 +1,80 @@
+
+<html>
+	<head>
+		<script src="http://d3js.org/d3.v3.min.js"></script>
+	</head>
+	<body>
+		<script>
+			var width = 500;
+			var height = 500;
+			//Selecting the body tag and appending an SVG element to it
+			var svg = d3.select("body").append("svg")
+				.attr("width", width)
+				.attr("height", height);
+
+			var x1 = 100;
+			var y1 = 100;
+			var r = 30;
+
+			//append a red circle of radius r at coordinates x1, y1
+			var circle = svg.append("circle")
+			//attributes take two arguments: the attribute you are modifying and the value you want that attribute to have
+			//Right now we are using constant values, but later functions will be used to give dynamic values for sets
+			//of data.
+				.attr("cx", x1)
+				.attr("cy", y1)
+				.attr("r", r)
+			//style specifies an attribute that would be determined through css
+				.style("fill", "red");
+
+			//append blue rectangle at same coordinates
+			var rect = svg.append("rect")
+				.attr("x", x1)
+				.attr("y", y1)
+				.attr("width", 30)
+				.attr("height", 30)
+				.style("fill", "blue");
+
+			//append text box at same coordinates
+			var text = svg.append("text")
+				.attr("x", x1)
+				.attr("y", y1)
+				.attr("font-size", 30)
+				.attr("font-family", "sans-serif")
+				.text("Hello World!")
+				.style("fill", "black");
+
+			var line = svg.append("line")
+				.attr("x1", x1)
+				.attr("y1", y1)
+				.attr("x2", x1 + 200)
+				.attr("y2", y1 + 200)
+				.attr("stroke", "black")
+				.attr("stroke-width", 5);
+
+
+			//Creating a seamless transition that will move the circle
+			//duration takes milliseconds as an argument
+			circle.transition().duration(1000)
+				.attr("cx", x1 + 200)
+				.attr("cy", y1 + 200);
+			
+			rect.transition().duration(1000)
+				.attr("x", x1 + 200)
+				.attr("y", y1)
+				.attr("width", 50)
+				.attr("height", 50);
+
+			text.transition().duration(1000)
+				.attr("x", x1)
+				.attr("y", y1 + 200)
+			/* 
+			Under most circumstances, the origin, or (x, y) location, is the top left of the
+			element, as in the rectangle.
+			For circles, cx and cy stand for center X and center Y; their origin is the center of the circle.
+			For text, the origin is the bottom left.
+			*/
+
+		</script>
+	</body>
+</html>

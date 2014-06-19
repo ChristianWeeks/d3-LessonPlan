@@ -1,0 +1,48 @@
+
+<html>
+	<head>
+		<script src="http://d3js.org/d3.v3.min.js"></script>
+	</head>
+	<body>
+		<script>
+			/*
+				Importing Data from external files
+				Callback functions
+				Layouts
+						*/
+			var dataArray = [10, 8, 15, 30, 22, 9, 12, 15];
+			var width = height = 600;
+			
+
+			//d3.json("filename.json") fetches the data located in the specified json file.  Same syntax works for csv (d3.csv("filename.csv"))
+			d3.json("part2data.json", function(data) {
+				//This is a CALLBACK function and is required because javascript runs asynchronously, meaning javascript does not wait for certain functions
+				//before proceeding further through code segments.  Any code that is reliant on the data fetched by this function must therefore be located in
+				//this callback function; otherwise, there will be no data for it to use.		
+
+
+			var svg = d3.select("body").append("svg")
+				.attr("width", width)
+				.attr("height", height);
+			
+
+				var bars = svg
+					.selectAll("rect")
+					.data(data)
+					.enter()		
+					.append("rect")	
+					.attr("x", function(d, i) {
+						return 50 * i;
+					})
+					.attr("y", function(d, i) {
+						return (height - 100) - (5*d.score); 
+					})
+					.attr("width", 30)
+					.attr("height", function(d, i) {	
+						return 5 * d.score;
+					});
+			});
+
+		</script>
+	</body>
+</html>
