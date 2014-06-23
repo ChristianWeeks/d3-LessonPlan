@@ -1,0 +1,12 @@
+This directory contains a short lesson plan for a ~3 hour workshop on D3.js  The lesson assumes prior knowledge of html, css, and at least
+familiarity with javascript.
+
+The lesson will start with a brief powerpoint introducing the subject matter.  It will explain what d3.js is, give several examples of 
+visualizations made using d3.js, and then give a brief overview of web browser development tools and javascript.  The lesson will then
+jump straight into coding in d3.js with 3 different parts:
+
+1. Covers simple selecting, appending svgs, and making transitions
+2. Covers binding data svg elements
+3. Covers the histogram layout and mouseover functions.
+
+Each part is punctuated with questions and sessions for the audience to create their own visualizations based on the lesson.
