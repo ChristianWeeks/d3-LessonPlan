@@ -6,42 +6,131 @@
 	<body>
 		<script>
 			/*
-				Importing Data from external files
-				Callback functions
 				Layouts
+				Mouseover Functions
 						*/
-			var dataArray = [10, 8, 15, 30, 22, 9, 12, 15];
-			var width = height = 600;
+			var width = 700;
+			var height = 500;
 			
 
+			var data = [
+				{"name": "Christian Weeks", "score": 35},
+				{"name": "Dr. Levine", "score": 95},
+				{"name": "Dr. Dean", "score": 80},
+				{"name": "Dr. Malloy", "score": 85},
+				{"name": "Dr. Byrd", "score": 100},
+				{"name": "Anna Karenina", "score": 75},	
+				{"name": "Arya Stark", "score": 75},
+				{"name": "Sarah Palin", "score": 15},
+				{"name": "Joffrey Baratheon", "score": 35},
+				{"name": "Cathy Ames", "score": 70},
+				{"name": "Frank  Underwood", "score": 80},
+				{"name": "Harry Potter", "score": 65},
+				{"name": "Snoopy", "score": 90},
+				{"name": "Charlie Brown", "score": 45},
+				{"name": "Spongebob Squarepants", "score": 95},
+				{"name": "Sandy Cheeks", "score": 85},
+				{"name": "Irina Asanova", "score": 60},
+				{"name": "Caligula", "score": 65},
+				{"name": "Nero", "score": 75},
+				{"name": "Cosmo Kramer", "score": 85},
+				{"name": "Nefertiti", "score": 85},
+				{"name": "Akhenaten", "score": 65},
+				{"name": "Arkady Renko", "score": 95},
+				{"name": "Augustus Caesar", "score": 85},
+				{"name": "George Costanza", "score": 25},
+				{"name": "Christopher Columbus", "score": 55},
+				{"name": "Angela Merkel", "score": 75},
+				{"name": "Cleopatra", "score": 55},
+				{"name": "Dan Quayle", "score": 0}
+			];
+			/*		
+			Unfortunately, this function can't be used in the demonstration as d3.json() can only load documents through a local http host.  This demonstration
+			is done locally through a file browser, so d3.json causes errors.  I've left the code in for reference.
+			
 			//d3.json("filename.json") fetches the data located in the specified json file.  Same syntax works for csv (d3.csv("filename.csv"))
-			d3.json("part2data.json", function(data) {
+			d3.json("http://people.cs.clemson.edu/~caweeks/d3-LessonPlan/part2data.json", function(error, data) {
 				//This is a CALLBACK function and is required because javascript runs asynchronously, meaning javascript does not wait for certain functions
 				//before proceeding further through code segments.  Any code that is reliant on the data fetched by this function must therefore be located in
 				//this callback function; otherwise, there will be no data for it to use.		
+
+				if(error) return console.log(error);
+			}
+			*/
 
 
 			var svg = d3.select("body").append("svg")
 				.attr("width", width)
 				.attr("height", height);
-			
 
-				var bars = svg
-					.selectAll("rect")
-					.data(data)
-					.enter()		
-					.append("rect")	
-					.attr("x", function(d, i) {
-						return 50 * i;
-					})
-					.attr("y", function(d, i) {
-						return (height - 100) - (5*d.score); 
-					})
-					.attr("width", 30)
-					.attr("height", function(d, i) {	
-						return 5 * d.score;
-					});
-			});
+			//histogram layout - automatically sorts values into an array of bins. 
+			var histogram = d3.layout.histogram()
+				//.bins(10) specifies that the data will be divided into 10 bins of equal sizes
+				.bins(10)
+				//.value(function(d)...) specifies what values in (data) to use.  Since data contains both "name" and "score" elements, we have to
+			   	//create a function to specify that the values we will sort by are contained in "score"
+				.value(function(d){ return d.score;})
+				(data);
+
+			console.log(histogram);	
+
+			var textBox = svg.append("text")
+				.attr("x", 20)
+				.attr("y", 100)
+				.text("...");
+
+			var bars = svg
+				.selectAll("rect")
+				.data(histogram)
+				.enter()		
+				.append("rect")	
+				.style("fill", "#ffaaaa")
+				.attr("x", function(d, i) {
+					return d.x * 5;
+				})
+				.attr("y", function(d, i) {
+					//align across top
+					//return 100;
+
+					//align across the bottom
+					return (height - 100) - (15*d.y); 
+				})
+				.attr("width", 30)
+				.attr("height", function(d, i) {	
+
+					return 15 * d.y;
+				})
+				//Mouse functions - "mouseover", "mouseout", and "click"
+				//second argument takes a function that will be carried out when the corresponding mouse action occurs
+				//In this case, when the mouse is over a bar, it will change that bar's color and write out all the names
+				//in that fell in that bin.
+				.on("mouseover", function(d, i) {
+					//setting the index of the current object, which is the moused over object, into i
+					var index = i;
+					bars.style("fill", function(d, i) {
+						//this function iterates through ALL elements in bar.  In order to make sure only our current, moused over bar
+						//is highlighted, we can just compare indices.  index stores the index of the moused over object, so when it
+						//equals i, that's our element
+						if(index == i)
+							return "#ff5555";
+						return "#ffaaaa";});
+
+					var string = "";
+					//d is an array of all the objects in this particular bin.  This loop creates a string from all the names in that bin.
+					for (var i = 0; i < d.length; i++){
+						string += d[i].name;
+						if(i != d.length - 1)
+							string += ", ";
+						}
+					//changing the text in the text box
+					textBox.text(string);
+
+				});
+
+
+
+
+		//	});
 
 		</script>
 	</body>
