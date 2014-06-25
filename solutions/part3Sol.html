@@ -44,20 +44,6 @@
 				{"name": "Cleopatra", "score": 55},
 				{"name": "Dan Quayle", "score": 0}
 			];
-			/*		
-			Unfortunately, this function can't be used in the demonstration as d3.json() can only load documents through a local http host.  This demonstration
-			is done locally through a file browser, so d3.json causes errors.  I've left the code in for reference.
-			
-			//d3.json("filename.json") fetches the data located in the specified json file.  Same syntax works for csv (d3.csv("filename.csv"))
-			d3.json("http://people.cs.clemson.edu/~caweeks/d3-LessonPlan/part2data.json", function(error, data) {
-				//This is a CALLBACK function and is required because javascript runs asynchronously, meaning javascript does not wait for certain functions
-				//before proceeding further through code segments.  Any code that is reliant on the data fetched by this function must therefore be located in
-				//this callback function; otherwise, there will be no data for it to use.		
-
-				if(error) return console.log(error);
-			}
-			*/
-
 
 			var svg = d3.select("body").append("svg")
 				.attr("width", width)

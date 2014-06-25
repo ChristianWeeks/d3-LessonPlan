@@ -8,7 +8,10 @@
 				Entering data with .data().enter()
 				the d, i, arguments
 			*/
+
+			//this is the data we will bind to our SVG document
 			var dataArray = [10, 8, 15, 30, 22, 9, 12, 15];
+
 			var width = height = 600;
 			
 			var svg = d3.select("body").append("svg")
@@ -16,25 +19,23 @@
 				.attr("height", height);
 
 
-				var bars = svg
+			var bars = svg
 				//selectAll selects all <rect> elements located within svg.  There are none, so selectAll returns an empty selection
 				.selectAll("rect")
 				//.data(dataArray) binds all of the data in dataArray to the selection made by selectAll.  So all of the data in
 				//dataArray is now bound to an empty selection, since no <rect> elements previously existed.
 				.data(dataArray)
-				//Each datum requires a DOM svg element to correspond to it.  .enter() automatically creates all of the elements
+				//Each datum requires an svg element to correspond to it.  .enter() automatically creates all of the elements
 				//needed for each datum.
-				//.enter() is used when there are fewer corresponding DOM elements than there are data points.  Two similar methods exist:
-				//.exit(), which is used when there are already more DOM elements than data points, and
-				//.update(), which is used when there are already equal DOM elements with data points.  .enter() is used most often.
+				//.enter() is used when there are fewer corresponding svg elements than there are data points.  Two similar methods exist:
+				//.exit(), which is used when there are already more svg elements than data points, and
+				//.update(), which is used when there are already equal svg elements with data points.  .enter() is used most often.
 				.enter()		
 				.append("rect")
-				
 				.attr("x", function(d, i) {
 				//this function iterates through all of the data entered by .data() and returns the proper value.
 				//d is the same as dataArray[i].  i is just the index in the array.
 				//d is a DEEP COPY of dataArray.  They are separate in memory, so changes to one will not effect the other.
-					//d = i;
 					console.log(dataArray[i]);
 					console.log(d);
 					return 50 * i;
