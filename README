@@ -8,5 +8,11 @@ jump straight into coding in d3.js with 3 different parts:
 1. Covers simple selecting, appending svgs, and making transitions
 2. Covers binding data svg elements
 3. Covers the histogram layout and mouseover functions.
+4. Covers importing geospatial data and using topojson to create maps
+	part4 requires the following dependencies
+	-libgdal1-dev
+	-ogr2ogr
+	-topjson
+	-http-server
 
 Each part is punctuated with questions and sessions for students to create their own visualizations based on the lesson.
