@@ -1,0 +1,90 @@
+
+<html>
+	<head>
+		<script src="http://d3js.org/d3.v3.min.js"></script>
+		<script src="http://d3js.org/topojson.v1.min.js"></script>
+	</head>
+	<body>
+		<script>
+			var width = 1700,
+			    height = 1000;
+				//this will create a standard, flat map projection
+//			var projection = d3.geo.mercator()
+//			    .scale(500)
+//			    .translate([width / 2, height / 2]);
+
+			//this will create an albers equal area conic projection, which accepts
+			//has methods that use latitude and longitude to accurately model the points as if they were
+			//on a spherical surface
+			var projection = d3.geo.albers()
+				.center([0,41.9]) // center of US is 98, 41.9
+				.rotate([98, 0]) //rotate 98 degrees west
+				.parallels([20, 50])//approximate latitude limits of the contiguous US
+				.scale(1200)
+				.translate([width / 2, height / 2]);
+
+				//takes the 2d geometry and formats it properly for the SVG given the projection
+			var path = d3.geo.path()
+			    .projection(projection);
+
+			var svg = d3.select("body").append("svg")
+			    .attr("width", width)
+			    .attr("height", height);
+
+			d3.json("json/USA.json", function(error, USA) {
+
+				//storing all data in an object for convenience
+				var data = {};
+				data.land = topojson.feature(USA, USA.objects.states).features;
+				data.cities = topojson.feature(USA, USA.objects.cities).features;
+
+				var elements = {};
+				//drawing the states
+				var land = svg.selectAll("land")
+					.data(data.land)
+					.enter()
+					.append("path")
+					.attr("fill", function(d, i){
+						var index = i % 4;
+						if(index == 0)
+							d.color = "#ffffcc";
+						if(index == 1)
+							d.color = "#ffcccc";
+						if(index == 2)
+							d.color = "#ccffcc";
+						if(index == 3)
+							d.color = "#ccffff";
+						return d.color;
+					})
+					.attr("stroke", "black")
+					.attr("stroke-width", 1)
+					.attr("d", path)
+					.on("mouseover", function(d, i){
+						d3.select(this).transition().attr("fill", "#ff9999");
+					})
+					.on("mouseout", function(d, i){
+						d3.select(this).transition().attr("fill", function(d, i) {return d.color});
+					});
+
+
+				//drawing the points of the cities
+				var cities = svg.selectAll("cities")
+					.data(data.cities)
+					.enter()
+					.append("path")
+					.style("fill", "#444444")
+					.attr("d", path);
+
+				//drawing the city labels
+				var labels = svg.selectAll("labels")
+					.data(data.cities)
+					.enter()
+					.append("text")
+					.attr("transform", function(d) { return "translate(" + projection(d.geometry.coordinates) + ")"})
+					.text(function(d) { return d.properties.name; });
+	
+			});
+
+		</script>
+	</body>
+</html>
