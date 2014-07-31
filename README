@@ -12,7 +12,12 @@ jump straight into coding in d3.js with 3 different parts:
 	part4 requires the following dependencies
 	-libgdal1-dev
 	-ogr2ogr
-	-topjson
+	-topojson
 	-http-server
+
+Parts 1 - 3 require no set up and and will work simply by copying the code in the solutions into the blank templates.  Part 4, however, takes several steps:
+1. User must download shape files (.shp) from naturalearthdata.com into VectorFiles.
+2. User must run GIStoJSON.sh, a bash script that converts the vector data from the shape files and places them in .json format so D3 can read and manipulate them.  This script requires libgdal, ogr2ogr, and topojson.
+3. User must start up a web server using http-server.  Simply type (http-server -p 8008 &) in directory of the files and then go to that address in the web browser.  This step is required to properly import .json files.
 
 Each part is punctuated with questions and sessions for students to create their own visualizations based on the lesson.
